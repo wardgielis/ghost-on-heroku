@@ -1,149 +1,95 @@
-# [Ghost](https://github.com/TryGhost/Ghost) on [Heroku](http://heroku.com)
+<p align="center">
+  <a href="https://ghost.org">
+    <img src="https://user-images.githubusercontent.com/120485/43974508-b64b2fe8-9cd2-11e8-8e58-707254b8817c.png" width="140px" alt="Ghost" />
+  </a>
+</p>
+<p align="center">
+    <a href="https://ghost.org">Ghost.org</a> |
+    <a href="https://ghost.org/features">Features</a> |
+    <a href="https://ghost.org/customers">Showcase</a> |
+    <a href="https://forum.ghost.org">Forum</a> |
+    <a href="https://ghost.org/docs/">Documentation</a> |
+    <a href="https://github.com/TryGhost/Ghost/blob/master/.github/CONTRIBUTING.md">Contributing</a> |
+    <a href="https://twitter.com/ghost">Twitter</a>
+    <br /><br />
+    <a href="https://ghost.org">
+        <img src="https://img.shields.io/badge/downloads-2M-brightgreen.svg" alt="Downloads" />
+    </a>
+    <a href="https://github.com/TryGhost/Ghost/releases/">
+        <img src="https://img.shields.io/github/release/TryGhost/Ghost.svg" alt="Latest release" />
+    </a>
+    <a href="https://github.com/TryGhost/Ghost/actions">
+        <img src="https://github.com/TryGhost/Ghost/workflows/Test%20Suite/badge.svg?branch=master" alt="Build status" />
+    </a>
+    <a href="https://github.com/TryGhost/Ghost/contributors/">
+        <img src="https://img.shields.io/github/contributors/TryGhost/Ghost.svg" alt="Contributors" />
+    </a>
+    <a href="https://opencollective.com/ghost">
+        <img src="https://opencollective.com/ghost/backers/badge.svg" alt="OpenCollective" />
+    </a>
+</p>
 
-Ghost is a free, open, simple blogging platform. Visit the project's website at <http://ghost.org>, or read the docs on <http://support.ghost.org>.
+&nbsp;
 
-## Ghost version 1.X
+<a href="https://ghost.org"><img src="https://user-images.githubusercontent.com/120485/66918181-f88fdc80-f048-11e9-8135-d9c0e7b35ebc.png" alt="Fiercely independent, professional publishing. Ghost is the most popular open source, headless Node.js CMS which already works with all the tools you know and love." /></a>
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+<a href="https://ghost.org/pricing"><img src="https://user-images.githubusercontent.com/120485/43995179-556d7620-9da1-11e8-8410-4b2ba48ea8d0.png" alt="Ghost(Pro)" width="165px" /></a>
 
-### Things you should know
+The easiest way to deploy Ghost is with our official **[Ghost(Pro)](https://ghost.org/pricing/)** managed service. You can have a fresh instance up and running in a couple of clicks with a worldwide CDN, backups, security and maintenance all done for you.
 
-After deployment,
-- First, visit Ghost at `https://YOURAPPNAME.herokuapp.com/ghost` to set up your admin account
-- The app may take a few minutes to come to life
-- Your blog will be publicly accessible at `https://YOURAPPNAME.herokuapp.com`
-- If you subsequently set up a [custom domain](https://devcenter.heroku.com/articles/custom-domains) for your blog, you’ll need to update your Ghost blog’s `PUBLIC_URL` environment variable accordingly, `heroku config:set PUBLIC_URL=https://www.example.com`
+Not only will it save you hours of maintenance per month, but all revenue goes to the Ghost Foundation, which funds the maintenance and further development of Ghost itself. So you’ll be supporting open source software *and* getting a great service! Alternatively if you'd like to support us, we're very grateful to all our backers on [Open Collective](https://opencollective.com/ghost) :heart:
 
-#### 🚫🔻 Do not scale-up beyond a single dyno
+If you prefer to run on your own infrastructure, we also provide 1-off installs and managed support and maintenance plans via **[Ghost(Valet)](https://valet.ghost.org)** - which can save a substantial amount of developer time and resources.
 
-[Ghost does not support multiple processes.](https://docs.ghost.org/faq/clustering-sharding-multi-server/)
+&nbsp;
 
-If your Ghost app needs to support substantial traffic, then use a CDN add-on:
+# Quickstart Install
 
-  * [Fastly](https://elements.heroku.com/addons/fastly)
-  * [Edge](https://elements.heroku.com/addons/edge).
-
-#### Using with file uploads disabled
-
-Heroku app filesystems [aren’t meant for permanent storage](https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem), so file uploads are disabled by default when using this repository to deploy a Ghost blog to Heroku. If you’re using Ghost on Heroku with S3 file uploads disabled, you should leave all environment variables beginning with `S3_…` blank.
-
-#### Configuring S3 file uploads
-
-To configure S3 file storage, create an S3 bucket on Amazon AWS, and then specify the following details as environment variables on the Heroku deployment page (or add these environment variables to your app after deployment via the Heroku dashboard):
-
-- `S3_ACCESS_KEY_ID` and `S3_ACCESS_SECRET_KEY`: **Required if using S3 uploads**. These fields are the AWS key/secret pair needed to authenticate with Amazon S3. You must have granted this keypair sufficient permissions on the S3 bucket in question in order for S3 uploads to work.
-
-- `S3_BUCKET_NAME`: **Required if using S3 uploads**. This is the name you gave to your S3 bucket.
-
-- `S3_BUCKET_REGION`: **Required if using S3 uploads**. Specify the region the bucket has been created in, using slug format (e.g. `us-east-1`, `eu-west-1`). A full list of S3 regions is [available here](http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region).
-
-- `S3_ASSET_HOST_URL`: Optional, even if using S3 uploads. Use this variable to specify the S3 bucket URL in virtual host style, path style or using a custom domain. You should also include a trailing slash (example `https://my.custom.domain/`).  See [this page](http://docs.aws.amazon.com/AmazonS3/latest/dev/VirtualHosting.html) for details.
-
-Once your app is up and running with these variables in place, you should be able to upload images via the Ghost interface and they’ll be stored in Amazon S3. :sparkles:
-
-##### Provisioning an S3 bucket using an add-on
-
-If you’d prefer not to configure S3 manually, you can provision the [Bucketeer add-on](https://devcenter.heroku.com/articles/bucketeer)
-to get an S3 bucket (Bucketeer starts at $5/mo).
-
-To configure S3 via Bucketeer, leave all the S3 deployment fields blank and deploy your
-Ghost blog. Once your blog is deployed, run the following commands from your terminal:
-
-```bash
-# Provision an Amazon S3 bucket
-heroku addons:create bucketeer --app YOURAPPNAME
-
-# Additionally, the bucket's region must be set to formulate correct URLs
-# (Find the "Region" in your Bucketeer Add-on's web dashboard.)
-heroku config:set S3_BUCKET_REGION=us-east-1 --app YOURAPPNAME
-```
-
-### How this works
-
-This repository is a [Node.js](https://nodejs.org) web application that specifies [Ghost as a dependency](https://docs.ghost.org/v1.0.0/docs/using-ghost-as-an-npm-module), and makes a deploy button available.
-
-  * Ghost and Casper theme versions are declared in the Node app's [`package.json`](package.json)
-  * Scales across processor cores in larger dynos via [Node cluster API](https://nodejs.org/dist/latest-v6.x/docs/api/cluster.html)
-
-## Updating source code
-
-Optionally after deployment, to push Ghost upgrades or work with source code, clone this repo (or a fork) and connect it with the Heroku app:
-
-```bash
-git clone https://github.com/cobyism/ghost-on-heroku
-cd ghost-on-heroku
-
-heroku git:remote -a YOURAPPNAME
-heroku info
-```
-
-Then you can push commits to the Heroku app, triggering new deployments:
-
-```bash
-git add .
-git commit -m "Important changes"
-git push heroku master
-```
-
-Watch the app's server-side behavior to see errors and request traffic:
-
-```bash
-heroku logs -t
-```
-
-See more about [deploying to Heroku with git](https://devcenter.heroku.com/articles/git).
-
-### Upgrading Ghost
-
-On each deployment, the Heroku Node/npm build process will **auto-upgrade Ghost to the newest 1.x version**. To prevent this behavior, use npm 5+ (or yarn) to create a lockfile.
-
-```bash
-npm install
-git add package-lock.json
-git commit -m 'Lock dependencies'
-git push heroku master
-```
-
-Now, future deployments will always use the same set of dependencies.
-
-To update to newer versions:
+If you want to run your own instance of Ghost, in most cases the best way is to use our **CLI tool**
 
 ```
-npm update
-git add package-lock.json
-git commit -m 'Update dependencies'
-git push heroku master
+$ npm install ghost-cli -g
 ```
 
-### Database migrations
+&nbsp;
 
-Requires MySQL database, available through either of two add-ons:
-  * [JawsDB](https://elements.heroku.com/addons/jawsdb) (deploy default)
-  * [ClearDB](https://elements.heroku.com/addons/cleardb)
-
-Newer versions of Ghost frequently require changes to the database. These changes are automated with a process called **database migrations**.
-
-After upgrading Ghost, you may see errors logged like:
-
-> DatabaseIsNotOkError: Migrations are missing. Please run knex-migrator migrate.
-
-To resolve this error, run the pending migrations and restart to get the app back on-line:
-
-```bash
-heroku run knex-migrator migrate --mgpath node_modules/ghost
-heroku restart
-```
-
-This can be automated by adding the following line to `Procfile`:
+Then, if installing locally add the `local` flag to get up and running in under a minute - [Local install docs](https://ghost.org/docs/install/local/)
 
 ```
-release: knex-migrator migrate --mgpath node_modules/ghost
+$ ghost install local
 ```
 
-## Problems?
+&nbsp;
 
-If you have problems using your instance of Ghost, you should check the [official documentation](http://support.ghost.org/) or open an issue on [the official issue tracker](https://github.com/TryGhost/Ghost/issues). If you discover an issue with the deployment process provided by *this repository*, then [open an issue here](https://github.com/cobyism/ghost-on-heroku).
+or on a server run the full install, including automatic SSL setup using LetsEncrypt - [Production install docs](https://ghost.org/docs/install/ubuntu/)
 
-## License
+```
+$ ghost install
+```
 
-Released under the [MIT license](./LICENSE), just like the Ghost project itself.
+&nbsp;
+
+Check out our [official documentation](https://ghost.org/docs/) for more information about our [recommended hosting stack](https://ghost.org/docs/concepts/hosting/) & properly [upgrading Ghost](https://ghost.org/faq/upgrade-to-ghost-2-0/), plus everything you need to develop your own Ghost [themes](https://ghost.org/docs/api/handlebars-themes/) or work with [our API](https://ghost.org/docs/api/).
+
+&nbsp;
+
+
+# Getting Help
+
+You can find answers to a huge variety of questions, along with a large community of helpful developers over on the [Ghost forum](https://forum.ghost.org/) - replies are generally very quick. **Ghost(Pro)** customers also have access to 24/7 email support.
+
+To stay up to date with all the latest news and product updates, make sure you [subscribe to our blog](https://ghost.org/blog/) — or you can always follow us [on Twitter](https://twitter.com/Ghost), if you prefer your updates bite-sized and facetious. :saxophone::turtle:
+
+&nbsp;
+
+
+# Contributors & Advanced Developers
+
+For anyone wishing to contribute to Ghost or to hack/customise core files we recommend following our full development setup guides: [General Contributor Guide](https://ghost.org/docs/concepts/contributing/) | [Developer Setup Instructions](https://ghost.org/docs/install/source/) | [Admin Client development guide](https://ghost.org/docs/install/source/#ghost-admin)
+
+&nbsp;
+
+
+# Copyright & License
+
+Copyright (c) 2013-2020 Ghost Foundation - Released under the [MIT license](LICENSE). Ghost and the Ghost Logo are trademarks of Ghost Foundation Ltd. Please see our [trademark policy](https://ghost.org/trademark/) for info on acceptable usage.
